@@ -6,8 +6,8 @@
 
 /* box */
 .contestantBox {
-  width: 49vw;
-  height: 49vh;
+  width: 50%;
+  height: 50vh;
   border: black 3px solid;
   position: relative;
 }
@@ -72,4 +72,32 @@
 .disable-click {
   pointer-events: none;
   cursor: not-allowed; /* Optional: Change cursor style to indicate it's not clickable */
+}
+
+/* clocks */
+
+.initialCountDown {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20rem;
+  font-weight: bold;
+}
+
+.gameTimer {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.7rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  background-color: black;
+  color: white;
+  z-index: 3;
 }

@@ -106,8 +106,13 @@ export default function MultiplayerGame() {
 
   return (
     <div>
-      <div>{timer != 0 && isInitialCountdown && timer}</div>
-      <div>{timer != 0 && !isInitialCountdown && timer}</div>
+      {timer != 0 && isInitialCountdown && (
+        <div className="initialCountDown">{timer}</div>
+      )}
+
+      {timer != 0 && !isInitialCountdown && (
+        <div className="gameTimer">{timer}</div>
+      )}
 
       <div className="grid">
         {Object.keys(users).map((playerName, index) => {

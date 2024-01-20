@@ -1,6 +1,7 @@
 // MyContext.js
 import { useMemo, createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
+import beep from "../assets/beep.mp3";
 
 const SocketContext = createContext({});
 
@@ -46,10 +47,13 @@ export const SocketProvider = ({ children }) => {
       });
     });
 
-    sock.on("startGame", () => setIsGameStarted(true));
+    sock.on("startGame", () => {
+      setIsGameStarted(true);
+    });
 
     sock.on("setTimer", (duration) => {
       setTimer(duration);
+      new Audio(beep).play();
     });
 
     return () => {
