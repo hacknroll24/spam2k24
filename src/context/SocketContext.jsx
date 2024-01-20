@@ -13,7 +13,7 @@ export const SocketProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(-1);
 
   useEffect(() => {
     // Connect to the Socket.IO server
@@ -89,8 +89,15 @@ export const SocketProvider = ({ children }) => {
     socket?.emit("startTimer", roomCode, duration);
   };
 
+  const handleEndGame = () => {
+    setIsGameStarted(false);
+    setUsers({});
+    setTimer(-1);
+    socket?.emit("kickPlayer", roomCode, user);
+  };
+
   const handleDisconnect = () => {
-    socket?.emit("disconnect", roomCode, user);
+    socket?.disconnect();
   };
 
   const memoedValue = useMemo(
@@ -105,6 +112,7 @@ export const SocketProvider = ({ children }) => {
       handleClick,
       handleStartGame,
       handleStartTimer,
+      handleEndGame,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,6 +127,7 @@ export const SocketProvider = ({ children }) => {
       handleClick,
       handleStartGame,
       handleStartTimer,
+      handleEndGame,
       handleDisconnect,
       socket,
     ]

@@ -10,6 +10,7 @@ import WaitingRoom from "./WaitingRoom.jsx";
 import JoinARoom from "./JoinARoom.jsx";
 import CreateRoom from "./CreateRoom.jsx";
 import { SocketProvider } from "./context/SocketContext.jsx";
+import Congrats from "./Congrats.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/join-a-room",
     element: <JoinARoom />,
+  },
+  {
+    path: "/congrats",
+    element: <Congrats />,
   },
 ]);
 
