@@ -9,6 +9,7 @@ import Homepage from "./Homepage.jsx";
 import WaitingRoom from "./WaitingRoom.jsx";
 import JoinARoom from "./JoinARoom.jsx";
 import CreateRoom from "./CreateRoom.jsx";
+import { SocketProvider } from "./context/SocketContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <SocketProvider>
+      <RouterProvider router={router} />
+    </SocketProvider>
   </React.StrictMode>
 );

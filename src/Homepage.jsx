@@ -1,9 +1,17 @@
-import React from "react";
 import "./Homepage.css";
 import { Link } from "react-router-dom";
 import LeftRightPanel from "./components/LeftRightPanel";
+import useSocket from "./context/SocketContext";
+import { generateRandomString } from "./utils/stringUtils";
 
-export default function Homepage({ leftChild, rightChild }) {
+export default function Homepage() {
+  const socket = useSocket();
+  const roomCode = generateRandomString();
+
+  // const handleClick = () => {
+  //   socket.handleJoinRoom(roomCode, socket);
+  // };
+
   return (
     <LeftRightPanel
       rightChild={
