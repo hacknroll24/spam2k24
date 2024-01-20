@@ -12,6 +12,7 @@ export const SocketProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
     // Connect to the Socket.IO server
@@ -32,7 +33,6 @@ export const SocketProvider = ({ children }) => {
         ...prevUsers,
         [user]: newIq,
       }));
-      //   console.log("updated users: ", users);
     });
 
     sock.on("userList", (userList) => {
@@ -47,6 +47,10 @@ export const SocketProvider = ({ children }) => {
     });
 
     sock.on("startGame", () => setIsGameStarted(true));
+
+    sock.on("setTimer", (duration) => {
+      setTimer(duration);
+    });
 
     return () => {
       sock.off("startGame");
@@ -77,6 +81,10 @@ export const SocketProvider = ({ children }) => {
     socket?.emit("startGame", roomCode);
   };
 
+  const handleStartTimer = (duration) => {
+    socket?.emit("startTimer", roomCode, duration);
+  };
+
   const handleDisconnect = () => {
     socket?.emit("disconnect", roomCode, user);
   };
@@ -88,9 +96,11 @@ export const SocketProvider = ({ children }) => {
       isRoomJoined,
       users,
       isGameStarted,
+      timer,
       handleJoinRoom,
       handleClick,
       handleStartGame,
+      handleStartTimer,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,9 +110,11 @@ export const SocketProvider = ({ children }) => {
       isRoomJoined,
       users,
       isGameStarted,
+      timer,
       handleJoinRoom,
       handleClick,
       handleStartGame,
+      handleStartTimer,
       handleDisconnect,
       socket,
     ]

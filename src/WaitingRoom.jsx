@@ -12,14 +12,13 @@ export default function WaitingRoom() {
   useEffect(() => {
     setPlayers(Object.keys(socket.users));
 
-    setEnoughPlayers(Object.keys(socket.users).length >= 2);
+    setEnoughPlayers(Object.keys(socket.users).length >= 1);
 
-    if (socket.isGameStarted) navigate("/game");
-
-    console.log(socket.users);
+    if (socket.isGameStarted && socket.timer == 5) navigate("/game");
   }, [socket, navigate]);
 
   const handleClick = () => {
+    socket.handleStartTimer(5);
     socket.handleStartGame();
   };
 

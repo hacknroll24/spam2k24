@@ -5,7 +5,6 @@ import { useState } from "react";
 import "./Countdown.css";
 import useSocket from "./context/SocketContext";
 
-import React from "react";
 import "./MultiplayerGame.css";
 import avatar1 from "./assets/avatar1.jpg";
 import avatar2 from "./assets/avatar2.jpg";
@@ -17,13 +16,19 @@ const avatars = [avatar1, avatar2, avatar3, avatar4];
 
 const namePositions = [{}]; //TODO
 
-function ContestantBox({ index, playerName, iq, socketHandleClick }) {
+function ContestantBox({
+  index,
+  playerName,
+  iq,
+  timer,
+  isInitialCountdown,
+  socketHandleClick,
+}) {
   const { user } = useSocket();
-  const boxBelongsToOtherPlayer = user !== playerName;
-
   const [isClicked, setIsClicked] = useState(false);
   const parentRef = useRef(null);
   const avatar = avatars[index];
+  const boxBelongsToOtherPlayer = user !== playerName;
 
   useEffect(() => {
     if (boxBelongsToOtherPlayer) {
@@ -41,6 +46,18 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (iq != 0) {
+      new Audio(clicksound1).play();
+      setIsClicked(true);
+      setTimeout(() => {
+        setIsClicked(false);
+      }, 50);
+
+      animatePlusOne();
+    }
+  }, [iq]);
+
   function animatePlusOne() {
     const newDiv = document.createElement("div");
     newDiv.textContent = "IQ + 1";
@@ -52,34 +69,24 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
   }
 
   const handleClick = () => {
-    if (boxBelongsToOtherPlayer) {
-      return;
-    }
-
-    new Audio(clicksound1).play();
-    setIsClicked(true);
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 50);
-
     console.log(`calling socketHandleClick for user ${playerName}, iq=${iq}`);
     socketHandleClick(iq + 1, playerName);
-
-    animatePlusOne();
   };
 
   return (
-    <div className="contestantBox" ref={parentRef}>
+    <div
+      className={`${
+        ((timer != 0 && isInitialCountdown) ||
+          (timer == 0 && !isInitialCountdown)) &&
+        "disable-click"
+      } contestantBox`}
+      ref={parentRef}
+    >
       <div className={`iqCounter ${isClicked && "big"}`}>Total IQ: {iq}</div>
       <img
-        className={`bobbingImage ${isClicked && "small"}`}
-        style={
-          boxBelongsToOtherPlayer
-            ? {
-                cursor: "not-allowed",
-              }
-            : {}
-        }
+        className={`bobbingImage ${isClicked && "small"} ${
+          boxBelongsToOtherPlayer && "disable-click"
+        }`}
         onClick={handleClick}
         src={avatar}
         alt="alternative-text"
@@ -90,21 +97,39 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
   );
 }
 export default function MultiplayerGame() {
-  const { handleClick, users } = useSocket();
+  const { users, socketTimer, handleStartTimer, handleClick } = useSocket();
+  const [timer, setTimer] = useState(socketTimer);
+  const [isInitialCountdown, setIsInitialCountdown] = useState(true);
+
+  useEffect(() => {
+    setTimer(socketTimer);
+
+    if (timer == 0 && isInitialCountdown) {
+      handleStartTimer(30);
+      setIsInitialCountdown(false);
+    }
+  }, [users, socketTimer, isInitialCountdown, timer, handleStartTimer]);
 
   return (
-    <div className="grid">
-      {Object.keys(users).map((playerName, index) => {
-        return (
-          <ContestantBox
-            key={playerName}
-            index={index}
-            playerName={playerName}
-            iq={users[playerName]}
-            socketHandleClick={handleClick}
-          />
-        );
-      })}
+    <div>
+      <div>{timer != 0 && isInitialCountdown && timer}</div>
+      <div>{timer != 0 && !isInitialCountdown && timer}</div>
+
+      <div className="grid">
+        {Object.keys(users).map((playerName, index) => {
+          return (
+            <ContestantBox
+              key={playerName}
+              index={index}
+              playerName={playerName}
+              iq={users[playerName]}
+              timer={timer}
+              isInitialCountdown={isInitialCountdown}
+              socketHandleClick={handleClick}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
