@@ -49,3 +49,12 @@
     opacity: 0;
   }
 }
+
+.image{
+  height: 200px;
+  width: 200px;
+  transform: translateX(-20%);
+  bottom: 70px;
+  position: relative;
+  
+}
