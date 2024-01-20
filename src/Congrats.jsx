@@ -18,7 +18,9 @@ function Congrats() {
     <div className="container">
       <h1> Congratulations!</h1>
       <h2>{`To ${winner} for a successful +${winnerIq} boost in IQ!`}</h2>
-      <button onClick={handleOnClick}>Home</button>
+      <button className="button" onClick={handleOnClick}>
+        Home
+      </button>
     </div>
   );
 }

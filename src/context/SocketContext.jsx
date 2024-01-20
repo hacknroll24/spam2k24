@@ -91,7 +91,10 @@ export const SocketProvider = ({ children }) => {
 
   const handleEndGame = () => {
     setIsGameStarted(false);
+    setIsRoomJoined(false);
     setUsers({});
+    setUser("");
+    setRoomCode("");
     setTimer(-1);
     socket?.emit("kickPlayer", roomCode, user);
   };
