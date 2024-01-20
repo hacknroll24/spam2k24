@@ -17,7 +17,12 @@ function Congrats() {
   return (
     <div className="container">
       <h1> Congratulations!</h1>
-      <h2>{`To ${winner} for a successful +${winnerIq} boost in IQ!`}</h2>
+      <div className="subheading">
+        <h2>To</h2>
+        <div className="winner">{winner}</div>
+        <h2> {`for a successful +${winnerIq} boost in IQ!`}</h2>
+      </div>
+
       <button className="button" onClick={handleOnClick}>
         Home
       </button>
