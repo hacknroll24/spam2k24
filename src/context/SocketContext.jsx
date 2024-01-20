@@ -89,8 +89,14 @@ export const SocketProvider = ({ children }) => {
     socket?.emit("startTimer", roomCode, duration);
   };
 
+  const handleEndGame = () => {
+    setIsGameStarted(false);
+    setUsers({});
+    socket?.emit("kickPlayers", roomCode);
+  };
+
   const handleDisconnect = () => {
-    socket?.emit("disconnect", roomCode, user);
+    socket?.disconnect();
   };
 
   const memoedValue = useMemo(
@@ -105,6 +111,7 @@ export const SocketProvider = ({ children }) => {
       handleClick,
       handleStartGame,
       handleStartTimer,
+      handleEndGame,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,6 +126,7 @@ export const SocketProvider = ({ children }) => {
       handleClick,
       handleStartGame,
       handleStartTimer,
+      handleEndGame,
       handleDisconnect,
       socket,
     ]

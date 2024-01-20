@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useState } from "react";
 import "./Countdown.css";
 import useSocket from "./context/SocketContext";
+import { useNavigate } from "react-router-dom";
 
 import "./MultiplayerGame.css";
 import avatar1 from "./assets/avatar1.jpg";
@@ -94,15 +95,28 @@ function ContestantBox({
   );
 }
 export default function MultiplayerGame() {
-  const { users, timer, handleStartTimer, handleClick } = useSocket();
+  const { users, timer, handleStartTimer, handleClick, handleEndGame } =
+    useSocket();
   const [isInitialCountdown, setIsInitialCountdown] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (timer == 0 && isInitialCountdown) {
-      handleStartTimer(30);
+      handleStartTimer(7);
       setIsInitialCountdown(false);
+    } else if (timer == 1 && !isInitialCountdown) {
+      setInterval(() => {
+        navigate("/congrats");
+      }, 1000);
     }
-  }, [users, timer, isInitialCountdown, handleStartTimer]);
+  }, [
+    users,
+    timer,
+    isInitialCountdown,
+    handleStartTimer,
+    handleEndGame,
+    navigate,
+  ]);
 
   return (
     <div>
