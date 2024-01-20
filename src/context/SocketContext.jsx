@@ -12,6 +12,7 @@ export const SocketProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
   const [isGameStarted, setIsGameStarted] = useState(false);
+
   useEffect(() => {
     // Connect to the Socket.IO server
     const sock = io(`http://localhost:${import.meta.env.VITE_API_PORT}`);
@@ -40,6 +41,8 @@ export const SocketProvider = ({ children }) => {
         setUsers(newUsers);
       });
     });
+
+    sock.on("startGame", () => setIsGameStarted(true));
   }, [isRoomJoined]);
 
   const handleJoinRoom = (roomCode, user) => {
@@ -52,13 +55,14 @@ export const SocketProvider = ({ children }) => {
     socket?.to(roomCode).emit("click", { newIq, user });
   };
 
-  const handleDisconnect = () => {
-    socket?.disconnect();
+  const handleStartGame = () => {
+    setIsGameStarted(true);
+    socket?.emit("startGame", roomCode);
   };
 
-  //   const handleStartGame = () => {
-  //     i;
-  //   };
+  const handleDisconnect = () => {
+    socket?.emit("disconnect", roomCode, user);
+  };
 
   const memoedValue = useMemo(
     () => ({
@@ -66,8 +70,10 @@ export const SocketProvider = ({ children }) => {
       roomCode,
       isRoomJoined,
       users,
+      isGameStarted,
       handleJoinRoom,
       handleClick,
+      handleStartGame,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,8 +82,10 @@ export const SocketProvider = ({ children }) => {
       roomCode,
       isRoomJoined,
       users,
+      isGameStarted,
       handleJoinRoom,
       handleClick,
+      handleStartGame,
       handleDisconnect,
       socket,
     ]

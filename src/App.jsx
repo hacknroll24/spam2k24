@@ -1,9 +1,9 @@
 // src/App.jsx
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useState } from "react";
-import React from "react";
 import "./App.css";
 import "./Countdown.css";
+// import useSocket from "./context/SocketContext";
 
 function ContestantBox({
   player,
@@ -69,31 +69,12 @@ function ContestantBox({
   );
 }
 export default function App() {
-  const [remainingTime, setRemainingTime] = React.useState(30);
-  const [initialCountdown, setInitialCountdown] = useState(3);
-
   const [players, setPlayers] = useState({
     Shiying: 0,
     Zhiwei: 0,
     Bryann: 0,
     Alvin: 0,
   });
-
-  // useEffect(() => {
-  //   // Check if the 3-second timer has finished
-  //   if (initialCountdown > 0) {
-  //     const timer = setTimeout(() => {
-  //       setInitialCountdown(initialCountdown - 1);
-  //     }, 1000);
-  //     return () => clearTimeout(timer);
-  //   } else {
-  //     // The 3-second timer has finished, start the 30-second timer
-  //     remainingTime > 0 &&
-  //       setTimeout(() => setRemainingTime(remainingTime - 1), 1000);
-  //   }
-  // }, [initialCountdown, remainingTime]);
-
-  // console.log(players);
 
   return (
     <div className="grid">
@@ -105,8 +86,6 @@ export default function App() {
             player={player}
             players={players}
             setPlayers={setPlayers}
-            // remainingTime={remainingTime}
-            // initialCountdown={initialCountdown}
           />
         );
       })}
