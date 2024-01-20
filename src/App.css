@@ -1,13 +1,17 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
 .parent-anchor {
-  width: 50vw;
-  height: 50vh;
-  background-color: blue;
+  width: 49vw;
+  height: 49vh;
+  border: black 3px solid;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 50%;
-  left: 50%;
 }
 
 .bobbingElement {
@@ -50,11 +54,25 @@
   }
 }
 
-.image{
+.image {
   height: 200px;
   width: 200px;
   transform: translateX(-20%);
   bottom: 70px;
   position: relative;
-  
+}
+
+.button {
+  width: 300px;
+  border-radius: 10px;
+  background-color: white;
+  border: black solid 1px;
+  padding: 15px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.button:hover {
+  color: white;
+  background-color: black;
 }
