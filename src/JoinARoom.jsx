@@ -70,7 +70,9 @@ export default function JoinARoom() {
               onChange={onChangeCode}
             ></input>
           </div>
-          <button onClick={handleClick}>Join</button>
+          <button className="button" onClick={handleClick}>
+            Join
+          </button>
         </>
       }
     />

@@ -26,13 +26,13 @@ export default function Homepage() {
           </div>
           <div className="buttonWrapper">
             <Link to={"singleplayer"}>
-              <button className="button">Start</button>
+              <button className="button hoverChangeColor">Start</button>
             </Link>
             <Link to={"create-room"}>
-              <button className="button">Create a room</button>
+              <button className="button hoverChangeColor">Create a room</button>
             </Link>
             <Link to={"join-a-room"}>
-              <button className="button">Join a room</button>
+              <button className="button hoverChangeColor">Join a room</button>
             </Link>
           </div>
         </>

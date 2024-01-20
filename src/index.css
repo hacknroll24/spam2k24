@@ -67,7 +67,13 @@ h1 {
   font-size: 24px;
 }
 
-.button:hover {
+.button.reversedColor {
+  background-color: black;
+  border: white solid 1px;
+  color: white;
+}
+
+.button.hoverChangeColor:hover {
   color: white;
   background-color: black;
 }
@@ -75,4 +81,11 @@ h1 {
 .disable-click {
   pointer-events: none;
   cursor: not-allowed; /* Optional: Change cursor style to indicate it's not clickable */
+}
+
+input {
+  padding-left: 10px;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
 }

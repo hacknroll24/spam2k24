@@ -33,27 +33,47 @@ export default function WaitingRoom() {
         <>
           {players.map((player, index) => (
             <Fragment key={player}>
-              <div style={{}}>
-                <div>
-                  Player {index}: {player}
+              <div
+                className="playerRow"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "3rem",
+                    fontWeight: "bold",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  Player {index + 1}:
                 </div>
                 <div
                   style={{
-                    padding: "10px",
-                    width: "100px",
+                    marginLeft: "20px",
+                    height: "70px",
+                    width: "300px",
+                    border: "2px solid black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "1.5rem",
                   }}
-                ></div>
+                >
+                  {player}
+                </div>
               </div>
             </Fragment>
           ))}
           <button
-            style={{
-              width: "300px",
-            }}
+            className="button reversedColor"
             onClick={handleClick}
             disabled={!enoughPlayers}
           >
-            Start
+            START
           </button>
         </>
       }
@@ -75,7 +95,19 @@ export default function WaitingRoom() {
             }}
           >
             <label>Name: </label>
-            <div>{socket.user}</div>
+            <div
+              style={{
+                backgroundColor: "white",
+                width: "200px",
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingY: "5px",
+              }}
+            >
+              {socket.user}
+            </div>
           </div>
           <div
             style={{
@@ -85,7 +117,19 @@ export default function WaitingRoom() {
             }}
           >
             <label>Code:</label>
-            <div>{socket.roomCode}</div>
+            <div
+              style={{
+                backgroundColor: "white",
+                width: "200px",
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingY: "5px",
+              }}
+            >
+              {socket.roomCode}
+            </div>
           </div>
         </>
       }

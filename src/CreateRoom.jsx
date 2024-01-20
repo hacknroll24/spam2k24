@@ -46,7 +46,6 @@ export default function CreateRoom() {
               display: "flex",
               justifyContent: "center",
               gap: "20px",
-              fontSize: "36px",
             }}
           >
             <label>Name: </label>
@@ -64,7 +63,6 @@ export default function CreateRoom() {
               display: "flex",
               justifyContent: "center",
               gap: "20px",
-              fontSize: "36px",
             }}
           >
             <button

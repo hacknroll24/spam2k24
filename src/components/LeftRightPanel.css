@@ -11,8 +11,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  align-items: center;
+  gap: 30px;
   color: white;
+  font-size: 2rem;
 }
 
 .rightPanel {
@@ -21,5 +23,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 20px;
 }
