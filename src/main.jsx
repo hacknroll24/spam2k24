@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
+import MultiplayerGame from "./MultiplayerGame.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/game",
-    element: <App />,
+    element: <MultiplayerGame />,
   },
   {
     path: "/waiting-room",

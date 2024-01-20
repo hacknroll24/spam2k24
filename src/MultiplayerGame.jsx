@@ -2,14 +2,24 @@
 // src/App.jsx
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import "./App.css";
 import "./Countdown.css";
 import useSocket from "./context/SocketContext";
 
-function ContestantBox({ player, iq, socketHandleClick }) {
-  const [isClicked, setIsClicked] = useState(false);
+import React from "react";
+import "./MultiplayerGame.css";
+import avatar1 from "./assets/avatar1.jpg";
+import avatar2 from "./assets/avatar2.jpg";
+import avatar3 from "./assets/avatar3.jpg";
+import avatar4 from "./assets/avatar4.jpg";
 
+const avatars = [avatar1, avatar2, avatar3, avatar4];
+
+const namePositions = [{}]; //TODO
+
+function ContestantBox({ index, playerName, iq, socketHandleClick }) {
+  const [isClicked, setIsClicked] = useState(false);
   const parentRef = useRef(null);
+  const avatar = avatars[index];
 
   function animatePlusOne() {
     const newDiv = document.createElement("div");
@@ -18,43 +28,34 @@ function ContestantBox({ player, iq, socketHandleClick }) {
     parentRef.current.appendChild(newDiv);
     setTimeout(() => {
       newDiv.remove();
-    }, 10);
+    }, 500);
   }
 
   const handleClick = () => {
     setIsClicked(true);
     setTimeout(() => {
       setIsClicked(false);
-    }, 10);
+    }, 50);
 
-    socketHandleClick(iq + 1, player);
+    socketHandleClick(iq + 1, playerName);
 
     animatePlusOne();
   };
 
   return (
     <div className="contestantBox" ref={parentRef}>
-      <div
-        style={{
-          fontSize: "30px",
-          position: "absolute",
-          top: "10px",
-          left: "50%",
-          transform: "translate(-50%)",
-        }}
-      >
-        Total IQ: {iq}
-      </div>
+      <div className={`iqCounter ${isClicked && "big"}`}>Total IQ: {iq}</div>
       <img
-        className={`bobbingElement ${isClicked && "big"}`}
+        className={`bobbingImage ${isClicked && "small"}`}
         onClick={handleClick}
-        src="https://th.bing.com/th/id/OIP.qu70OyOo7iHNk0O8mRg0fgHaL2?rs=1&pid=ImgDetMain"
+        src={avatar}
         alt="alternative-text"
       ></img>
+      <div className="playerName">{playerName}</div>
     </div>
   );
 }
-export default function App() {
+export default function MultiplayerGame() {
   const socket = useSocket();
   const [players, setPlayers] = useState(socket.users);
 
@@ -65,13 +66,13 @@ export default function App() {
 
   return (
     <div className="grid">
-      {Object.keys(players).map((player, index) => {
+      {Object.keys(players).map((playerName, index) => {
         return (
           <ContestantBox
-            key={player}
+            key={playerName}
             index={index}
-            player={player}
-            iq={players[player]}
+            playerName={playerName}
+            iq={players[playerName]}
             socketHandleClick={socket.handleClick}
           />
         );
