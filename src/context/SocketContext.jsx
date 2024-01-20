@@ -13,7 +13,6 @@ export const SocketProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
-  const [isGameStarted, setIsGameStarted] = useState(false);
   const [countdown, setCountdown] = useState(-1);
   const [gameClock, setGameClock] = useState(-1);
   const navigate = useNavigate();
@@ -51,7 +50,6 @@ export const SocketProvider = ({ children }) => {
     });
 
     sock.on("startGame", () => {
-      setIsGameStarted(true);
       navigate("/game");
     });
 
@@ -91,7 +89,6 @@ export const SocketProvider = ({ children }) => {
   };
 
   const handleStartGame = () => {
-    setIsGameStarted(true);
     navigate("/game");
     socket?.emit("startGame", roomCode);
   };
@@ -103,8 +100,18 @@ export const SocketProvider = ({ children }) => {
     socket?.emit("startGameClock", roomCode);
   };
 
+  const handleEndGame = () => {
+    setIsRoomJoined(false);
+    setUsers({});
+    setUser("");
+    setRoomCode("");
+    setCountdown(-1);
+    setGameClock(-1);
+    socket?.emit("kickPlayer", roomCode, user);
+  };
+
   const handleDisconnect = () => {
-    socket?.emit("disconnect", roomCode, user);
+    socket?.disconnect();
   };
 
   const memoedValue = useMemo(
@@ -113,7 +120,6 @@ export const SocketProvider = ({ children }) => {
       roomCode,
       isRoomJoined,
       users,
-      isGameStarted,
       countdown,
       gameClock,
       handleJoinRoom,
@@ -121,6 +127,7 @@ export const SocketProvider = ({ children }) => {
       handleStartGame,
       handleStartCountdown,
       handleStartGameClock,
+      handleEndGame,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,7 +136,6 @@ export const SocketProvider = ({ children }) => {
       roomCode,
       isRoomJoined,
       users,
-      isGameStarted,
       countdown,
       gameClock,
       handleJoinRoom,
@@ -137,6 +143,7 @@ export const SocketProvider = ({ children }) => {
       handleStartGame,
       handleStartCountdown,
       handleStartGameClock,
+      handleEndGame,
       handleDisconnect,
       socket,
     ]
