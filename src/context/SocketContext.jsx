@@ -27,9 +27,14 @@ export const SocketProvider = ({ children }) => {
       setIsRoomJoined(true);
     });
 
-    sock.on("updateClick", (ctx) =>
-      console.log(`${ctx.user}'s IQ is now ${ctx.newIq}`)
-    );
+    sock.on("updateClick", (user, newIq) => {
+      //   console.log("updating users: ", users);
+      setUsers((prevUsers) => ({
+        ...prevUsers,
+        [user]: newIq,
+      }));
+      //   console.log("updated users: ", users);
+    });
 
     sock.on("userList", (userList) => {
       let newUsers = {};
@@ -43,7 +48,7 @@ export const SocketProvider = ({ children }) => {
     });
 
     sock.on("startGame", () => setIsGameStarted(true));
-  }, [isRoomJoined]);
+  }, [isRoomJoined, users]);
 
   const handleJoinRoom = (roomCode, user) => {
     setUser(user);
@@ -52,7 +57,12 @@ export const SocketProvider = ({ children }) => {
   };
 
   const handleClick = (newIq, user) => {
-    socket?.to(roomCode).emit("click", { newIq, user });
+    socket?.emit("click", newIq, user, roomCode);
+
+    setUsers((prevUsers) => ({
+      ...prevUsers,
+      [user]: newIq,
+    }));
   };
 
   const handleStartGame = () => {
