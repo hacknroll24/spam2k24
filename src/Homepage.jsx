@@ -1,9 +1,8 @@
-import React from "react";
 import "./Homepage.css";
 import { Link } from "react-router-dom";
 import LeftRightPanel from "./components/LeftRightPanel";
 
-export default function Homepage({ leftChild, rightChild }) {
+export default function Homepage() {
   return (
     <LeftRightPanel
       rightChild={

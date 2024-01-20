@@ -1,41 +1,20 @@
-import React, { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import LeftRightPanel from "./components/LeftRightPanel";
-
-import { io } from "socket.io-client";
-
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useSocket from "./context/SocketContext";
 
 export default function WaitingRoom() {
   const [players, setPlayers] = useState([]);
-  const [socket, setSocket] = useState();
 
+  const navigate = useNavigate();
+  const socket = useSocket();
   useEffect(() => {
-    // const url =
-    //   process.env.NEXT_PUBLIC_ENV === "production"
-    //     ? process.env.NEXT_PUBLIC_MATCHING_ENDPOINT
-    //     : `http://localhost:${process.env.NEXT_PUBLIC_MATCHING_SERVICE_PORT}`;
-    const url = "test";
+    setPlayers(Object.keys(socket.users));
+  }, [socket]);
 
-    const socket = io(url || "", {
-      autoConnect: false,
-    });
-
-    setSocket(socket);
-
-    socket.on("start", (room_id) => {
-      Navigate("/game");
-      // setRoomId(room_id);
-    });
-
-    socket.on("playerJoin", (players) => {
-      setPlayers(players);
-    });
-
-    return () => {
-      socket.off("playerJoin");
-      socket.off("start");
-    };
-  }, []);
+  const handleClick = () => {
+    if (Object.keys(socket.users).length === 2) navigate("/game");
+  };
 
   return (
     <LeftRightPanel
@@ -60,6 +39,7 @@ export default function WaitingRoom() {
             style={{
               width: "300px",
             }}
+            onClick={handleClick}
           >
             Start
           </button>
@@ -93,7 +73,7 @@ export default function WaitingRoom() {
             }}
           >
             <label>Code:</label>
-            <div>HFLAS</div>
+            <div>{socket.roomCode}</div>
           </div>
         </>
       }

@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import LeftRightPanel from "./components/LeftRightPanel";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useSocket from "./context/SocketContext";
+import { generateRandomString } from "./utils/stringUtils";
 
 export default function CreateRoom() {
-  function handleCreateRoom() {
-    // socket.emit("createRoom");
-    // socket.on("roomCreated", () => {
-    //   Navigate("/game");
-    // });
+  const socket = useSocket();
+  const roomCode = generateRandomString();
+  const navigate = useNavigate();
 
+  function handleCreateRoom() {
     if (!name) {
       setError(true);
     }
 
+    socket.handleJoinRoom(roomCode, name);
+
     console.log("creating room");
   }
+
+  useEffect(() => {
+    if (socket.isRoomJoined) {
+      navigate("/waiting-room");
+    }
+  }, [socket, navigate]);
 
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
