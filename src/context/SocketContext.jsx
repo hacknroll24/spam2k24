@@ -24,7 +24,9 @@ export const SocketProvider = ({ children }) => {
         ? import.meta.env.VITE_DOMAIN
         : "http://localhost";
 
-    const sock = io(`${domain}:${import.meta.env.VITE_API_PORT}`);
+    const sock = io(
+      `https://spam2k24-backend.vercel.app:${import.meta.env.VITE_API_PORT}`
+    );
     setSocket(sock);
 
     // Handle events, emit messages, etc.
