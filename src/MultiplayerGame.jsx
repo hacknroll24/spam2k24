@@ -20,8 +20,8 @@ function ContestantBox({
   index,
   playerName,
   iq,
-  timer,
-  isInitialCountdown,
+  gameClock,
+  countdown,
   socketHandleClick,
 }) {
   const { user } = useSocket();
@@ -29,8 +29,7 @@ function ContestantBox({
   const parentRef = useRef(null);
   const avatar = avatars[index];
   const boxBelongsToOtherPlayer = user !== playerName;
-  const isDisabled =
-    (timer != 0 && isInitialCountdown) || (timer == 0 && !isInitialCountdown);
+  const isDisabled = countdown > 0 || gameClock === 0;
 
   const handleKeyPress = (event) => {
     if (event.key === " " || event.key === "Spacebar") {
@@ -94,25 +93,20 @@ function ContestantBox({
   );
 }
 export default function MultiplayerGame() {
-  const { users, timer, handleStartTimer, handleClick } = useSocket();
-  const [isInitialCountdown, setIsInitialCountdown] = useState(true);
+  const { users, countdown, handleStartGameClock, gameClock, handleClick } =
+    useSocket();
 
   useEffect(() => {
-    if (timer == 0 && isInitialCountdown) {
-      handleStartTimer(30);
-      setIsInitialCountdown(false);
+    if (countdown === 0) {
+      handleStartGameClock();
     }
-  }, [users, timer, isInitialCountdown, handleStartTimer]);
+  }, [countdown]);
 
   return (
     <div>
-      {timer != 0 && isInitialCountdown && (
-        <div className="initialCountDown">{timer}</div>
-      )}
+      {countdown > 0 && <div className="initialCountDown">{countdown}</div>}
 
-      {timer != 0 && !isInitialCountdown && (
-        <div className="gameTimer">{timer}</div>
-      )}
+      {gameClock >= 0 && <div className="gameTimer">{gameClock}</div>}
 
       <div className="grid">
         {Object.keys(users).map((playerName, index) => {
@@ -122,8 +116,8 @@ export default function MultiplayerGame() {
               index={index}
               playerName={playerName}
               iq={users[playerName]}
-              timer={timer}
-              isInitialCountdown={isInitialCountdown}
+              countdown={countdown}
+              gameClock={gameClock}
               socketHandleClick={handleClick}
             />
           );

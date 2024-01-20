@@ -1,24 +1,21 @@
 import { Fragment, useState, useEffect } from "react";
 import LeftRightPanel from "./components/LeftRightPanel";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import useSocket from "./context/SocketContext";
 
 export default function WaitingRoom() {
   const [players, setPlayers] = useState([]);
   const [enoughPlayers, setEnoughPlayers] = useState(false);
 
-  const navigate = useNavigate();
   const socket = useSocket();
+
   useEffect(() => {
     setPlayers(Object.keys(socket.users));
-
     setEnoughPlayers(Object.keys(socket.users).length >= 1);
-
-    if (socket.isGameStarted && socket.timer == 5) navigate("/game");
-  }, [socket, navigate]);
+  }, [socket]);
 
   const handleClick = () => {
-    socket.handleStartTimer(5);
+    socket.handleStartCountdown();
     socket.handleStartGame();
   };
 

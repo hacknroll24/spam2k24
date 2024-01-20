@@ -2,6 +2,7 @@
 import { useMemo, createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import beep from "../assets/beep.mp3";
+import { useNavigate } from "react-router-dom";
 
 const SocketContext = createContext({});
 
@@ -13,7 +14,9 @@ export const SocketProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [timer, setTimer] = useState(0);
+  const [countdown, setCountdown] = useState(-1);
+  const [gameClock, setGameClock] = useState(-1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Connect to the Socket.IO server
@@ -49,11 +52,18 @@ export const SocketProvider = ({ children }) => {
 
     sock.on("startGame", () => {
       setIsGameStarted(true);
+      navigate("/game");
     });
 
-    sock.on("setTimer", (duration) => {
-      setTimer(duration);
+    sock.on("setCountdown", (duration) => {
+      console.log(duration);
+      setCountdown(duration);
       new Audio(beep).play();
+    });
+
+    sock.on("setGameClock", (time) => {
+      console.log(time);
+      setGameClock(time);
     });
 
     return () => {
@@ -82,11 +92,15 @@ export const SocketProvider = ({ children }) => {
 
   const handleStartGame = () => {
     setIsGameStarted(true);
+    navigate("/game");
     socket?.emit("startGame", roomCode);
   };
 
-  const handleStartTimer = (duration) => {
-    socket?.emit("startTimer", roomCode, duration);
+  const handleStartCountdown = () => {
+    socket?.emit("startCountdown", roomCode);
+  };
+  const handleStartGameClock = () => {
+    socket?.emit("startGameClock", roomCode);
   };
 
   const handleDisconnect = () => {
@@ -100,11 +114,13 @@ export const SocketProvider = ({ children }) => {
       isRoomJoined,
       users,
       isGameStarted,
-      timer,
+      countdown,
+      gameClock,
       handleJoinRoom,
       handleClick,
       handleStartGame,
-      handleStartTimer,
+      handleStartCountdown,
+      handleStartGameClock,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,11 +130,13 @@ export const SocketProvider = ({ children }) => {
       isRoomJoined,
       users,
       isGameStarted,
-      timer,
+      countdown,
+      gameClock,
       handleJoinRoom,
       handleClick,
       handleStartGame,
-      handleStartTimer,
+      handleStartCountdown,
+      handleStartGameClock,
       handleDisconnect,
       socket,
     ]
