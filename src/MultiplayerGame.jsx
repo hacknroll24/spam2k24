@@ -11,15 +11,35 @@ import avatar1 from "./assets/avatar1.jpg";
 import avatar2 from "./assets/avatar2.jpg";
 import avatar3 from "./assets/avatar3.jpg";
 import avatar4 from "./assets/avatar4.jpg";
+import clicksound1 from "./assets/clicksound1.mp3";
 
 const avatars = [avatar1, avatar2, avatar3, avatar4];
 
 const namePositions = [{}]; //TODO
 
 function ContestantBox({ index, playerName, iq, socketHandleClick }) {
+  const { user } = useSocket();
+  const boxBelongsToOtherPlayer = user !== playerName;
+
   const [isClicked, setIsClicked] = useState(false);
   const parentRef = useRef(null);
   const avatar = avatars[index];
+
+  useEffect(() => {
+    if (boxBelongsToOtherPlayer) {
+      return;
+    }
+
+    const handleKeyPress = (event) => {
+      if (event.key === " ") {
+        handleClick();
+      }
+    };
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   function animatePlusOne() {
     const newDiv = document.createElement("div");
@@ -32,11 +52,17 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
   }
 
   const handleClick = () => {
+    if (boxBelongsToOtherPlayer) {
+      return;
+    }
+
+    new Audio(clicksound1).play();
     setIsClicked(true);
     setTimeout(() => {
       setIsClicked(false);
     }, 50);
 
+    console.log(`calling socketHandleClick for user ${playerName}, iq=${iq}`);
     socketHandleClick(iq + 1, playerName);
 
     animatePlusOne();
@@ -47,33 +73,35 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
       <div className={`iqCounter ${isClicked && "big"}`}>Total IQ: {iq}</div>
       <img
         className={`bobbingImage ${isClicked && "small"}`}
+        style={
+          boxBelongsToOtherPlayer
+            ? {
+                cursor: "not-allowed",
+              }
+            : {}
+        }
         onClick={handleClick}
         src={avatar}
         alt="alternative-text"
+        draggable={false}
       ></img>
       <div className="playerName">{playerName}</div>
     </div>
   );
 }
 export default function MultiplayerGame() {
-  const socket = useSocket();
-  const [players, setPlayers] = useState(socket.users);
-
-  useEffect(() => {
-    console.log(socket.users);
-    setPlayers(socket.users);
-  }, [socket.users, players, socket.user]);
+  const { handleClick, users } = useSocket();
 
   return (
     <div className="grid">
-      {Object.keys(players).map((playerName, index) => {
+      {Object.keys(users).map((playerName, index) => {
         return (
           <ContestantBox
             key={playerName}
             index={index}
             playerName={playerName}
-            iq={players[playerName]}
-            socketHandleClick={socket.handleClick}
+            iq={users[playerName]}
+            socketHandleClick={handleClick}
           />
         );
       })}
