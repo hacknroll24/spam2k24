@@ -5,16 +5,28 @@ import useSocket from "./context/SocketContext";
 
 export default function WaitingRoom() {
   const [players, setPlayers] = useState([]);
+  const [enoughPlayers, setEnoughPlayers] = useState(false);
 
   const navigate = useNavigate();
   const socket = useSocket();
   useEffect(() => {
     setPlayers(Object.keys(socket.users));
-  }, [socket]);
+
+    setEnoughPlayers(Object.keys(socket.users).length >= 2);
+
+    if (socket.isGameStarted) navigate("/game");
+
+    console.log(socket.users);
+  }, [socket, navigate]);
 
   const handleClick = () => {
-    if (Object.keys(socket.users).length === 2) navigate("/game");
+    socket.handleStartGame();
   };
+
+  window.addEventListener("beforeunload", () => {
+    // Disconnect the Socket.IO connection when the user leaves
+    socket.handleDisconnect();
+  });
 
   return (
     <LeftRightPanel
@@ -40,6 +52,7 @@ export default function WaitingRoom() {
               width: "300px",
             }}
             onClick={handleClick}
+            disabled={!enoughPlayers}
           >
             Start
           </button>
@@ -63,7 +76,7 @@ export default function WaitingRoom() {
             }}
           >
             <label>Name: </label>
-            <div>dsads</div>
+            <div>{socket.user}</div>
           </div>
           <div
             style={{

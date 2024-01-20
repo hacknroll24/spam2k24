@@ -12,6 +12,7 @@ export const SocketProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
   const [isGameStarted, setIsGameStarted] = useState(false);
+
   useEffect(() => {
     // Connect to the Socket.IO server
     const sock = io(`http://localhost:${import.meta.env.VITE_API_PORT}`);
@@ -26,9 +27,14 @@ export const SocketProvider = ({ children }) => {
       setIsRoomJoined(true);
     });
 
-    sock.on("updateClick", (ctx) =>
-      console.log(`${ctx.user}'s IQ is now ${ctx.newIq}`)
-    );
+    sock.on("updateClick", (user, newIq) => {
+      //   console.log("updating users: ", users);
+      setUsers((prevUsers) => ({
+        ...prevUsers,
+        [user]: newIq,
+      }));
+      //   console.log("updated users: ", users);
+    });
 
     sock.on("userList", (userList) => {
       let newUsers = {};
@@ -40,7 +46,9 @@ export const SocketProvider = ({ children }) => {
         setUsers(newUsers);
       });
     });
-  }, [isRoomJoined]);
+
+    sock.on("startGame", () => setIsGameStarted(true));
+  }, [isRoomJoined, users]);
 
   const handleJoinRoom = (roomCode, user) => {
     setUser(user);
@@ -49,16 +57,22 @@ export const SocketProvider = ({ children }) => {
   };
 
   const handleClick = (newIq, user) => {
-    socket?.to(roomCode).emit("click", { newIq, user });
+    socket?.emit("click", newIq, user, roomCode);
+
+    setUsers((prevUsers) => ({
+      ...prevUsers,
+      [user]: newIq,
+    }));
+  };
+
+  const handleStartGame = () => {
+    setIsGameStarted(true);
+    socket?.emit("startGame", roomCode);
   };
 
   const handleDisconnect = () => {
-    socket?.disconnect();
+    socket?.emit("disconnect", roomCode, user);
   };
-
-  //   const handleStartGame = () => {
-  //     i;
-  //   };
 
   const memoedValue = useMemo(
     () => ({
@@ -66,8 +80,10 @@ export const SocketProvider = ({ children }) => {
       roomCode,
       isRoomJoined,
       users,
+      isGameStarted,
       handleJoinRoom,
       handleClick,
+      handleStartGame,
       handleDisconnect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,8 +92,10 @@ export const SocketProvider = ({ children }) => {
       roomCode,
       isRoomJoined,
       users,
+      isGameStarted,
       handleJoinRoom,
       handleClick,
+      handleStartGame,
       handleDisconnect,
       socket,
     ]

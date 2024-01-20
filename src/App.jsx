@@ -1,21 +1,14 @@
+/* eslint-disable react/prop-types */
 // src/App.jsx
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import React from "react";
 import "./App.css";
 import "./Countdown.css";
+import useSocket from "./context/SocketContext";
 
-function ContestantBox({
-  player,
-  players,
-  setPlayers,
-  // initialCountdown,
-  // remainingTime,
-}) {
+function ContestantBox({ player, iq, socketHandleClick }) {
   const [isClicked, setIsClicked] = useState(false);
-  // const isGameStarted = remainingTime > 0 && initialCountdown === 0;
 
-  const iq = players[player];
   const parentRef = useRef(null);
 
   function animatePlusOne() {
@@ -34,14 +27,7 @@ function ContestantBox({
       setIsClicked(false);
     }, 10);
 
-    const newPlayers = {
-      ...players,
-      [player]: iq + 1,
-    };
-    console.log(newPlayers);
-
-    setPlayers(newPlayers);
-    // emit event
+    socketHandleClick(iq + 1, player);
 
     animatePlusOne();
   };
@@ -69,31 +55,13 @@ function ContestantBox({
   );
 }
 export default function App() {
-  const [remainingTime, setRemainingTime] = React.useState(30);
-  const [initialCountdown, setInitialCountdown] = useState(3);
+  const socket = useSocket();
+  const [players, setPlayers] = useState(socket.users);
 
-  const [players, setPlayers] = useState({
-    Shiying: 0,
-    Zhiwei: 0,
-    Bryann: 0,
-    Alvin: 0,
-  });
-
-  // useEffect(() => {
-  //   // Check if the 3-second timer has finished
-  //   if (initialCountdown > 0) {
-  //     const timer = setTimeout(() => {
-  //       setInitialCountdown(initialCountdown - 1);
-  //     }, 1000);
-  //     return () => clearTimeout(timer);
-  //   } else {
-  //     // The 3-second timer has finished, start the 30-second timer
-  //     remainingTime > 0 &&
-  //       setTimeout(() => setRemainingTime(remainingTime - 1), 1000);
-  //   }
-  // }, [initialCountdown, remainingTime]);
-
-  // console.log(players);
+  useEffect(() => {
+    console.log(socket.users);
+    setPlayers(socket.users);
+  }, [socket.users, players, socket.user]);
 
   return (
     <div className="grid">
@@ -103,10 +71,8 @@ export default function App() {
             key={player}
             index={index}
             player={player}
-            players={players}
-            setPlayers={setPlayers}
-            // remainingTime={remainingTime}
-            // initialCountdown={initialCountdown}
+            iq={players[player]}
+            socketHandleClick={socket.handleClick}
           />
         );
       })}
