@@ -3,10 +3,6 @@ import LeftRightPanel from "./components/LeftRightPanel";
 import { useNavigate } from "react-router-dom";
 import useSocket from "./context/SocketContext";
 
-import { io } from "socket.io-client";
-
-import { Navigate } from "react-router-dom";
-
 export default function WaitingRoom() {
   const [players, setPlayers] = useState([]);
 

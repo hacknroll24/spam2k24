@@ -7,6 +7,7 @@ import "./Countdown.css";
 
 function ContestantBox({
   player,
+  players,
   setPlayers,
   // initialCountdown,
   // remainingTime,
@@ -14,6 +15,7 @@ function ContestantBox({
   const [isClicked, setIsClicked] = useState(false);
   // const isGameStarted = remainingTime > 0 && initialCountdown === 0;
 
+  const iq = players[player];
   const parentRef = useRef(null);
 
   function animatePlusOne() {
@@ -26,40 +28,43 @@ function ContestantBox({
     }, 10);
   }
 
-  // const handleClick = () => {
-  // if (counter > 0 && counter1 === 0) {
-  // if (isGameStarted) {
-  //   if (true) {
-  //     setIsClicked(true);
-  //     setTimeout(() => {
-  //       setIsClicked(false);
-  //     }, 10);
+  const handleClick = () => {
+    setIsClicked(true);
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 10);
 
-  //     // socket.emit("", {
-  //     //   ...player,
-  //     //   iq: player.iq + 1
-  //     // })
+    const newPlayers = {
+      ...players,
+      [player]: iq + 1,
+    };
+    console.log(newPlayers);
 
-  //     animatePlusOne();
-  //   } else {
-  //     setIsClicked(false);
-  //   }
-  // }
+    setPlayers(newPlayers);
+    // emit event
+
+    animatePlusOne();
+  };
 
   return (
-    <div className="parent-anchor" ref={parentRef}>
-      <div style={{}}>Total IQ: {player.iq}</div>
+    <div className="contestantBox" ref={parentRef}>
       <div
-        className={`bobbingElement ${isClicked && "big"}`}
-        // onClick={handleClick}
+        style={{
+          fontSize: "30px",
+          position: "absolute",
+          top: "10px",
+          left: "50%",
+          transform: "translate(-50%)",
+        }}
       >
-        {/* Click me! */}
-        <img
-          className="image"
-          src="https://th.bing.com/th/id/OIP.qu70OyOo7iHNk0O8mRg0fgHaL2?rs=1&pid=ImgDetMain"
-          alt="alternative-text"
-        ></img>
+        Total IQ: {iq}
       </div>
+      <img
+        className={`bobbingElement ${isClicked && "big"}`}
+        onClick={handleClick}
+        src="https://th.bing.com/th/id/OIP.qu70OyOo7iHNk0O8mRg0fgHaL2?rs=1&pid=ImgDetMain"
+        alt="alternative-text"
+      ></img>
     </div>
   );
 }
@@ -73,7 +78,6 @@ export default function App() {
     Bryann: 0,
     Alvin: 0,
   });
-  console.log(Object.keys(players));
 
   // useEffect(() => {
   //   // Check if the 3-second timer has finished
@@ -93,26 +97,19 @@ export default function App() {
 
   return (
     <div className="grid">
-      {Object.keys(players).map((player) => {
+      {Object.keys(players).map((player, index) => {
         return (
           <ContestantBox
             key={player}
+            index={index}
             player={player}
+            players={players}
+            setPlayers={setPlayers}
             // remainingTime={remainingTime}
             // initialCountdown={initialCountdown}
           />
         );
       })}
-      {/* {Object.keys(players).map((player) => {
-        return (
-          <ContestantBox
-            key={player}
-            player={player}
-            // remainingTime={remainingTime}
-            // initialCountdown={initialCountdown}
-          />
-        );
-      })} */}
     </div>
   );
 }

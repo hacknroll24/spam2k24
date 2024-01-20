@@ -11,7 +11,7 @@ export const SocketProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
-
+  const [isGameStarted, setIsGameStarted] = useState(false);
   useEffect(() => {
     // Connect to the Socket.IO server
     const sock = io(`http://localhost:${import.meta.env.VITE_API_PORT}`);
@@ -55,6 +55,10 @@ export const SocketProvider = ({ children }) => {
   const handleDisconnect = () => {
     socket?.disconnect();
   };
+
+  //   const handleStartGame = () => {
+  //     i;
+  //   };
 
   const memoedValue = useMemo(
     () => ({
