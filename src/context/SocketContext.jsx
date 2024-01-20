@@ -19,7 +19,12 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     // Connect to the Socket.IO server
-    const sock = io(`http://localhost:${import.meta.env.VITE_API_PORT}`);
+    const domain =
+      import.meta.env.ENV === "PROD"
+        ? import.meta.env.DOMAIN
+        : "http://localhost";
+
+    const sock = io(`${domain}:${import.meta.env.VITE_API_PORT}`);
     setSocket(sock);
 
     // Handle events, emit messages, etc.
