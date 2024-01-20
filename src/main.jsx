@@ -8,6 +8,7 @@ import "./index.css";
 import Homepage from "./Homepage.jsx";
 import WaitingRoom from "./WaitingRoom.jsx";
 import JoinARoom from "./JoinARoom.jsx";
+import CreateRoom from "./CreateRoom.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/waiting-room",
     element: <WaitingRoom />,
+  },
+  {
+    path: "/create-room",
+    element: <CreateRoom />,
   },
   {
     path: "/join-a-room",

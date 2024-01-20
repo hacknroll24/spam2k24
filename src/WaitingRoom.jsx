@@ -1,13 +1,42 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import LeftRightPanel from "./components/LeftRightPanel";
 
+import { io } from "socket.io-client";
+
+import { Navigate } from "react-router-dom";
+
 export default function WaitingRoom() {
-  const [players, setPlayers] = useState([
-    "dsalkd",
-    "david",
-    "joker",
-    "bryann",
-  ]);
+  const [players, setPlayers] = useState([]);
+  const [socket, setSocket] = useState();
+
+  useEffect(() => {
+    // const url =
+    //   process.env.NEXT_PUBLIC_ENV === "production"
+    //     ? process.env.NEXT_PUBLIC_MATCHING_ENDPOINT
+    //     : `http://localhost:${process.env.NEXT_PUBLIC_MATCHING_SERVICE_PORT}`;
+    const url = "test";
+
+    const socket = io(url || "", {
+      autoConnect: false,
+    });
+
+    setSocket(socket);
+
+    socket.on("start", (room_id) => {
+      Navigate("/game");
+      // setRoomId(room_id);
+    });
+
+    socket.on("playerJoin", (players) => {
+      setPlayers(players);
+    });
+
+    return () => {
+      socket.off("playerJoin");
+      socket.off("start");
+    };
+  }, []);
+
   return (
     <LeftRightPanel
       rightChild={
@@ -27,7 +56,13 @@ export default function WaitingRoom() {
               </div>
             </Fragment>
           ))}
-          <button>Start</button>
+          <button
+            style={{
+              width: "300px",
+            }}
+          >
+            Start
+          </button>
         </>
       }
       leftChild={
@@ -48,7 +83,7 @@ export default function WaitingRoom() {
             }}
           >
             <label>Name: </label>
-            <input type="text"></input>
+            <div>dsads</div>
           </div>
           <div
             style={{
