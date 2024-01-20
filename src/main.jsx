@@ -2,12 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import MultiplayerGame from "./MultiplayerGame.jsx";
 
-import {
-  createBrowserRouter,
-  Route,
-  RouterProvider,
-  Routes,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import "./index.css";
 import Homepage from "./Homepage.jsx";
@@ -19,33 +14,6 @@ import Congrats from "./Congrats.jsx";
 
 import { BrowserRouter } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Homepage />,
-  },
-  {
-    path: "/game",
-    element: <MultiplayerGame />,
-  },
-  {
-    path: "/waiting-room",
-    element: <WaitingRoom />,
-  },
-  {
-    path: "/create-room",
-    element: <CreateRoom />,
-  },
-  {
-    path: "/join-a-room",
-    element: <JoinARoom />,
-  },
-  {
-    path: "/congrats",
-    element: <Congrats />,
-  },
-]);
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -56,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/waiting-room" element={<WaitingRoom />} />
           <Route path="/create-room" element={<CreateRoom />} />
           <Route path="/join-a-room" element={<JoinARoom />} />
+          <Route path="/congrats" element={<Congrats />} />
         </Routes>
       </SocketProvider>
     </BrowserRouter>
