@@ -29,22 +29,23 @@ function ContestantBox({
   const parentRef = useRef(null);
   const avatar = avatars[index];
   const boxBelongsToOtherPlayer = user !== playerName;
+  const isDisabled =
+    (timer != 0 && isInitialCountdown) || (timer == 0 && !isInitialCountdown);
 
-  // useEffect(() => {
-  //   if (boxBelongsToOtherPlayer) {
-  //     return;
-  //   }
+  const handleKeyPress = (event) => {
+    if (event.key === " " || event.key === "Spacebar") {
+      if (!boxBelongsToOtherPlayer && !isDisabled) {
+        handleClick();
+      }
+    }
+  };
 
-  //   const handleKeyPress = (event) => {
-  //     if (event.key === " ") {
-  //       handleClick();
-  //     }
-  //   };
-  //   document.addEventListener("keydown", handleKeyPress);
-  //   return () => {
-  //     document.removeEventListener("keydown", handleKeyPress);
-  //   };
-  // }, []);
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  });
 
   useEffect(() => {
     if (iq != 0) {
@@ -75,11 +76,7 @@ function ContestantBox({
 
   return (
     <div
-      className={`${
-        ((timer != 0 && isInitialCountdown) ||
-          (timer == 0 && !isInitialCountdown)) &&
-        "disable-click"
-      } contestantBox`}
+      className={`${isDisabled && "disable-click"} contestantBox`}
       ref={parentRef}
     >
       <div className={`iqCounter ${isClicked && "big"}`}>Total IQ: {iq}</div>
