@@ -30,21 +30,21 @@ function ContestantBox({
   const avatar = avatars[index];
   const boxBelongsToOtherPlayer = user !== playerName;
 
-  useEffect(() => {
-    if (boxBelongsToOtherPlayer) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (boxBelongsToOtherPlayer) {
+  //     return;
+  //   }
 
-    const handleKeyPress = (event) => {
-      if (event.key === " ") {
-        handleClick();
-      }
-    };
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, []);
+  //   const handleKeyPress = (event) => {
+  //     if (event.key === " ") {
+  //       handleClick();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", handleKeyPress);
+  //   return () => {
+  //     document.removeEventListener("keydown", handleKeyPress);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (iq != 0) {
@@ -97,18 +97,15 @@ function ContestantBox({
   );
 }
 export default function MultiplayerGame() {
-  const { users, socketTimer, handleStartTimer, handleClick } = useSocket();
-  const [timer, setTimer] = useState(socketTimer);
+  const { users, timer, handleStartTimer, handleClick } = useSocket();
   const [isInitialCountdown, setIsInitialCountdown] = useState(true);
 
   useEffect(() => {
-    setTimer(socketTimer);
-
     if (timer == 0 && isInitialCountdown) {
       handleStartTimer(30);
       setIsInitialCountdown(false);
     }
-  }, [users, socketTimer, isInitialCountdown, timer, handleStartTimer]);
+  }, [users, timer, isInitialCountdown, handleStartTimer]);
 
   return (
     <div>
