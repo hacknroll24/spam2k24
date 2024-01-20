@@ -71,3 +71,8 @@ h1 {
   color: white;
   background-color: black;
 }
+
+.disable-click {
+  pointer-events: none;
+  cursor: not-allowed; /* Optional: Change cursor style to indicate it's not clickable */
+}

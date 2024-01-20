@@ -32,7 +32,6 @@ export const SocketProvider = ({ children }) => {
         ...prevUsers,
         [user]: newIq,
       }));
-      //   console.log("updated users: ", users);
     });
 
     sock.on("userList", (userList) => {

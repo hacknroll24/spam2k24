@@ -41,6 +41,18 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (iq != 0) {
+      new Audio(clicksound1).play();
+      setIsClicked(true);
+      setTimeout(() => {
+        setIsClicked(false);
+      }, 50);
+
+      animatePlusOne();
+    }
+  }, [iq]);
+
   function animatePlusOne() {
     const newDiv = document.createElement("div");
     newDiv.textContent = "IQ + 1";
@@ -52,34 +64,17 @@ function ContestantBox({ index, playerName, iq, socketHandleClick }) {
   }
 
   const handleClick = () => {
-    if (boxBelongsToOtherPlayer) {
-      return;
-    }
-
-    new Audio(clicksound1).play();
-    setIsClicked(true);
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 50);
-
     console.log(`calling socketHandleClick for user ${playerName}, iq=${iq}`);
     socketHandleClick(iq + 1, playerName);
-
-    animatePlusOne();
   };
 
   return (
     <div className="contestantBox" ref={parentRef}>
       <div className={`iqCounter ${isClicked && "big"}`}>Total IQ: {iq}</div>
       <img
-        className={`bobbingImage ${isClicked && "small"}`}
-        style={
-          boxBelongsToOtherPlayer
-            ? {
-                cursor: "not-allowed",
-              }
-            : {}
-        }
+        className={`bobbingImage ${isClicked && "small"} ${
+          boxBelongsToOtherPlayer && "disable-click"
+        }`}
         onClick={handleClick}
         src={avatar}
         alt="alternative-text"
