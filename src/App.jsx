@@ -6,7 +6,7 @@ function App() {
 
   useEffect(() => {
     // Make a request to your Express server
-    fetch("http://localhost:3001/api/data")
+    fetch(`http://localhost:${import.meta.env.VITE_API_PORT}/api/data`)
       .then((response) => response.json())
       .then((result) => {
         setData(result);
