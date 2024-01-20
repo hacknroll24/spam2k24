@@ -13,7 +13,7 @@ export const SocketProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
   const [users, setUsers] = useState({});
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(-1);
 
   useEffect(() => {
     // Connect to the Socket.IO server
@@ -92,7 +92,8 @@ export const SocketProvider = ({ children }) => {
   const handleEndGame = () => {
     setIsGameStarted(false);
     setUsers({});
-    socket?.emit("kickPlayers", roomCode);
+    setTimer(-1);
+    socket?.emit("kickPlayer", roomCode, user);
   };
 
   const handleDisconnect = () => {

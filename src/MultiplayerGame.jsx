@@ -105,9 +105,7 @@ export default function MultiplayerGame() {
       handleStartTimer(7);
       setIsInitialCountdown(false);
     } else if (timer == 1 && !isInitialCountdown) {
-      setInterval(() => {
-        navigate("/congrats");
-      }, 1000);
+      setTimeout(navigate("/congrats"), 1000);
     }
   }, [
     users,
