@@ -13,6 +13,7 @@ import { SocketProvider } from "./context/SocketContext.jsx";
 import Congrats from "./Congrats.jsx";
 
 import { BrowserRouter } from "react-router-dom";
+import SingleplayerGame from "./SinglePlayerGame.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/create-room" element={<CreateRoom />} />
           <Route path="/join-a-room" element={<JoinARoom />} />
           <Route path="/congrats" element={<Congrats />} />
+          <Route path="/singleplayer" element={<SingleplayerGame />} />
         </Routes>
       </SocketProvider>
     </BrowserRouter>

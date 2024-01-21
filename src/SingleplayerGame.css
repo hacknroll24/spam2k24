@@ -1,0 +1,103 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+/* box */
+.contestantBox {
+  width: 50%;
+  height: 50vh;
+  border: black 3px solid;
+  position: relative;
+}
+
+.bobbingImage {
+  cursor: pointer;
+  transition: all 10 ease-in;
+  width: 150px;
+  height: 150px;
+  /* transform: translate(-50%, -50%); */
+  transform: translateX(-50%);
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+.small {
+  scale: 0.95;
+}
+
+.floatingText {
+  color: black;
+  position: absolute;
+  font-size: 48px;
+  top: 30%;
+  left: 50%;
+  font-size: large;
+  animation: countTipMove 1s;
+}
+
+@keyframes countTipMove {
+  from {
+    top: 30%;
+    opacity: 1;
+  }
+  to {
+    top: 20%;
+    opacity: 0;
+  }
+}
+
+.iqCounter {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 3rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.big {
+  scale: 1.1;
+}
+
+.contestantBox .playerName {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: 10px;
+  font-size: 2rem;
+}
+
+.disable-click {
+  pointer-events: none;
+  cursor: not-allowed; /* Optional: Change cursor style to indicate it's not clickable */
+}
+
+/* clocks */
+
+.initialCountDown {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20rem;
+  font-weight: bold;
+}
+
+.gameTimer {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.7rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  background-color: black;
+  color: white;
+  z-index: 3;
+}

@@ -22,9 +22,8 @@ export const SocketProvider = ({ children }) => {
     // const domain =
     //   import.meta.env.VITE_ENV === "PROD"
     //     ? import.meta.env.VITE_DOMAIN
-    //     : "http://localhost";
-    const domain = "https://spam2k24.onrender.com";
-
+    //     : `http://localhost:${import.meta.env.VITE_API_PORT}`;
+    const domain = `http://localhost:${import.meta.env.VITE_API_PORT}`;
     const sock = io(`${domain}`);
     setSocket(sock);
 
