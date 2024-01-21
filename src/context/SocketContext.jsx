@@ -19,14 +19,13 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     // Connect to the Socket.IO server
-    const domain =
-      import.meta.env.VITE_ENV === "PROD"
-        ? import.meta.env.VITE_DOMAIN
-        : "http://localhost";
+    // const domain =
+    //   import.meta.env.VITE_ENV === "PROD"
+    //     ? import.meta.env.VITE_DOMAIN
+    //     : "http://localhost";
+    const domain = "https://spam2k24.onrender.com";
 
-    const sock = io(
-      `https://spam2k24-backend.vercel.app:${import.meta.env.VITE_API_PORT}`
-    );
+    const sock = io(`${domain}`);
     setSocket(sock);
 
     // Handle events, emit messages, etc.
