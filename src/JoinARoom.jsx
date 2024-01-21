@@ -6,6 +6,7 @@ import useSocket from "./context/SocketContext";
 export default function JoinARoom() {
   const [name, setName] = useState("");
   const [roomCode, setRoomCode] = useState("");
+  const [error, setError] = useState(false);
 
   const socket = useSocket();
   const navigate = useNavigate();
@@ -17,6 +18,10 @@ export default function JoinARoom() {
   }, [socket, navigate]);
 
   const handleClick = () => {
+    if (!name) {
+      setError(true);
+      return;
+    }
     socket.handleJoinRoom(roomCode, name);
   };
 
@@ -73,6 +78,13 @@ export default function JoinARoom() {
           <button className="button" onClick={handleClick}>
             Join
           </button>
+          {error && (
+            <div
+              style={{ color: "red", marginTop: "50px", marginInline: "auto" }}
+            >
+              Please enter a name!!!
+            </div>
+          )}
         </>
       }
     />

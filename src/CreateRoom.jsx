@@ -12,6 +12,7 @@ export default function CreateRoom() {
   function handleCreateRoom() {
     if (!name) {
       setError(true);
+      return;
     }
 
     socket.handleJoinRoom(roomCode, name);

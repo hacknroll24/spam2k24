@@ -1,10 +1,20 @@
 import "./Homepage.css";
 import { Link } from "react-router-dom";
 import LeftRightPanel from "./components/LeftRightPanel";
+import gojo from "./assets/handsome.jpg";
 
 export default function Homepage() {
   return (
     <LeftRightPanel
+      leftChild={
+        <img
+          src={gojo}
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+        ></img>
+      }
       rightChild={
         <>
           <div
