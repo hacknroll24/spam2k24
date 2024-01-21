@@ -1,34 +1,38 @@
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin: auto;
-}
-
 /* box */
-.contestantBox {
-  width: 50%;
-  height: 50vh;
+.sp .contestantBox {
+  width: 100vw;
+  height: 100vh;
   border: black 3px solid;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.bobbingImage {
+.sp .instructions {
+  position: absolute;
+  bottom: 20%;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.sp .bobbingImage {
   cursor: pointer;
   transition: all 10 ease-in;
-  width: 150px;
-  height: 150px;
+  width: 300px;
+  height: 300px;
   /* transform: translate(-50%, -50%); */
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
 }
 
-.small {
+.sp .small {
   scale: 0.95;
 }
 
-.floatingText {
+.sp .floatingText {
   color: black;
   position: absolute;
   font-size: 48px;
@@ -49,19 +53,19 @@
   }
 }
 
-.iqCounter {
-  font-size: 1.5rem;
+.sp .iqCounter {
+  font-size: 5rem;
   position: absolute;
-  top: 3rem;
+  top: 6rem;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.big {
+.sp .big {
   scale: 1.1;
 }
 
-.contestantBox .playerName {
+.sp .contestantBox .playerName {
   position: absolute;
   left: 50%;
   transform: translate(-50%);
@@ -69,14 +73,14 @@
   font-size: 2rem;
 }
 
-.disable-click {
+.sp .disable-click {
   pointer-events: none;
   cursor: not-allowed; /* Optional: Change cursor style to indicate it's not clickable */
 }
 
 /* clocks */
 
-.initialCountDown {
+.sp .initialCountDown {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -85,7 +89,7 @@
   font-weight: bold;
 }
 
-.gameTimer {
+.sp .gameTimer {
   position: fixed;
   left: 50%;
   top: 50%;

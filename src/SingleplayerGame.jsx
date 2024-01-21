@@ -57,9 +57,10 @@ function SingleplayerGame() {
   };
 
   return (
-    <div>
-      <div className="instructions">Press spacebar or click to gain IQ!</div>
+    <div className="sp">
       <div className="contestantBox" ref={parentRef}>
+        <div className="instructions">Press spacebar or click to gain IQ!</div>
+
         <div className={`iqCounter ${isClicked && "big"}`}>Total IQ: {iq}</div>
         <img
           className={`bobbingImage ${isClicked && "small"}`}

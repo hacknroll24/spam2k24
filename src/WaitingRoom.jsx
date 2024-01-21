@@ -11,7 +11,7 @@ export default function WaitingRoom() {
 
   useEffect(() => {
     setPlayers(Object.keys(socket.users));
-    setEnoughPlayers(Object.keys(socket.users).length >= 1);
+    setEnoughPlayers(Object.keys(socket.users).length >= 2);
   }, [socket]);
 
   const handleClick = () => {
