@@ -13,7 +13,7 @@ import { SocketProvider } from "./context/SocketContext.jsx";
 import Congrats from "./Congrats.jsx";
 
 import { BrowserRouter } from "react-router-dom";
-import SingleplayerGame from "./SinglePlayerGame.jsx";
+import SingleplayerGame from "./SingleplayerGame.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
